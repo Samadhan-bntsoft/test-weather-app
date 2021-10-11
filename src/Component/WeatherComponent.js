@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import perfectDay from "../icons/perfect-day.svg";
 
 import {
   WeatherCondition,
@@ -11,11 +10,14 @@ import {
 } from "../ReusableComponent";
 import { WeatherInfoComponent } from "../ReusableComponent/WeatherInfoComponent";
 
-import sunset from "../icons/sunset.svg";
-import sunrise from "../icons/sunrise.svg";
-import humidity from "../icons/humidity.svg";
-import wind from "../icons/wind.svg";
-import pressure from "../icons/pressure.svg";
+import {
+  sunset,
+  sunrise,
+  humidity,
+  wind,
+  pressure,
+  perfectDay,
+} from "../icons";
 
 const imgIcon = { sunset, sunrise, humidity, wind, pressure };
 
@@ -25,25 +27,22 @@ const getTime = (timeStamp) => {
   ).getMinutes()}`;
 };
 
-function WeatherComponent(props) {
-  const { weather } = props;
-
+function WeatherComponent({ weather }) {
+  const objWeather = {
+    sunset: getTime(weather?.sys["sunset"]),
+    sunrise: getTime(weather?.sys["sunrise"]),
+    humidity: weather?.main?.humidity,
+    wind: weather?.wind?.speed,
+    pressure: weather?.main?.pressure,
+  };
   const WeatherName = ["humidity", "wind", "pressure"];
   const isDay = weather?.weather[0].icon?.includes("d");
-  console.log(isDay);
+
   if (isDay) {
     WeatherName.unshift("sunset");
   } else {
     WeatherName.unshift("sunrise");
   }
-
-  const objWeather = {
-    sunset,
-    sunrise,
-    humidity,
-    wind,
-    pressure,
-  };
 
   return (
     <>
@@ -57,22 +56,15 @@ function WeatherComponent(props) {
       <Location>{`${weather?.name} , ${weather?.sys?.country}`}</Location>
       <WeatherInfoLabel>Weather info </WeatherInfoLabel>
       <WeatherInfoContainer>
-        {/* <WeatherInfoComponent
-          name={isDay ? "sunset" : "sunrise"}
-          value={getTime(weather?.sys[isDay ? "sunset" : "sunrise"])}
-        /> */}
         {WeatherName.length == 4 &&
           WeatherName.map((item, i) => (
             <WeatherInfoComponent
               key={i}
               name={item}
-              value={getTime(weather?.sys[item])}
+              value={objWeather[item]}
               src={imgIcon[item]}
             />
           ))}
-
-        {/* <WeatherInfoComponent name="wind" value={weather?.wind?.speed} />
-       <WeatherInfoComponent name="pressure" value={weather?.main?.pressure} /> */}
       </WeatherInfoContainer>
     </>
   );

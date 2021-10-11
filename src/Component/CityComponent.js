@@ -9,13 +9,19 @@ import perfectDay from "../icons/perfect-day.svg";
 
 
 
-function CityComponent({ setcity,error, fetchWeather }) {
+function CityComponent({ setcity, seterror,error, fetchWeather }) {
   return (
     <>
       <CityWeatherLogo src={perfectDay} />
       <ChosseCityLabel>Find Weather of your city</ChosseCityLabel>
       <SearchBox onSubmit={fetchWeather}>
-        <input placeholder="city" onChange={(e) => setcity(e.target.value)} />
+        <input
+          placeholder="city"
+          onChange={(e) => {
+            seterror("");
+            setcity(e.target.value);
+          }}
+        />
         <button>search</button>
       </SearchBox>
       <ErrorContainer>{error ? error : ""}</ErrorContainer>

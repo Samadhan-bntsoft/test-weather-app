@@ -4,12 +4,9 @@ import CityComponent from "./Component/CityComponent";
 import WeatherComponent from "./Component/WeatherComponent";
 import { Container, AppLabel } from "./ReusableComponent";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-const HOST_API_URL = process.env.REACT_APP_HOST_API_URL;
-
 function App() {
   const [city, setcity] = useState("");
-  const [weather, setweather] = useState();
+  const [weather, setweather] = useState(null);
   const [error, seterror] = useState("");
 
   const fetchWeather = async (e) => {
@@ -21,13 +18,12 @@ function App() {
     } else {
       await axios
         .get(
-          `${HOST_API_URL}?q=${city}&appid=${API_KEY}`
+          `${process.env.REACT_APP_HOST_API_URL}?q=${city}&appid=${process.env.REACT_APP_API_KEY}`
         )
         .then((res) => {
           setweather(res.data);
         })
         .catch((error) => {
-          console.log(error);
           seterror(error.message);
         });
     }
@@ -41,6 +37,7 @@ function App() {
       ) : (
         <CityComponent
           setcity={setcity}
+          seterror={seterror}
           error={error}
           fetchWeather={fetchWeather}
         />
