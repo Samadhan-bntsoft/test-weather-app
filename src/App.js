@@ -13,7 +13,7 @@ function App() {
     e.preventDefault();
 
     var alphaExp = /^[a-zA-Z]+$/;
-    if (city.length == 0 || !city.match(alphaExp)) {
+    if (city.length === 0 || !city.match(alphaExp)) {
       seterror("Please enter only alphabets");
     } else {
       await axios
